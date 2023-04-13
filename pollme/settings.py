@@ -25,7 +25,7 @@ SECRET_KEY = 'x*za6xf&_80ofdpae!yzq61g9ffikkx9$*iygbl$j7rr4wlf8t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['DevopsApp-env.eba-eycy7mb6.eu-west-1.elasticbeanstalk.com','172.31.14.85']
+#ALLOWED_HOSTS = ['DevopsApp-env.eba-eycy7mb6.eu-west-1.elasticbeanstalk.com','172.31.14.85']
 #ALLOWED_HOSTS = ['7276caab070443cba21a81f2db28a624.vfs.cloud9.eu-west-1.amazonaws.com']
 
 # Application definition
@@ -122,4 +122,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
