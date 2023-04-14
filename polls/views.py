@@ -11,6 +11,7 @@ from .forms import PollAddForm, EditPollForm, ChoiceAddForm
 
 @login_required()
 def polls_list(request):
+    '''This function displays a list of polls based on various sorting and filtering options. It takes a request object as input and returns a rendered HTML template displaying the list of polls. The function requires the user to be logged in (@login_required decorator) to access the page.'''
     all_polls = Poll.objects.all()
     search_term = ''
     if 'name' in request.GET:
@@ -43,6 +44,7 @@ def polls_list(request):
 
 @login_required()
 def list_by_user(request):
+    '''This function displays a list of polls that are owned by the logged-in user. It takes a request object as input and returns a rendered HTML template displaying the list of polls. The function requires the user to be logged in (@login_required decorator) to access the page.'''
     all_polls = Poll.objects.filter(owner=request.user)
     paginator = Paginator(all_polls, 7)  # Show 7 contacts per page
 
@@ -57,6 +59,7 @@ def list_by_user(request):
 
 @login_required()
 def polls_add(request):
+    '''This function allows the user to add a new poll. It takes a request object as input and returns a rendered HTML template displaying a form to add a new poll. The function requires the user to be logged in (@login_required decorator) and have the permission to add polls (request.user.has_perm('polls.add_poll')) to access the page.'''
     if request.user.has_perm('polls.add_poll'):
         if request.method == 'POST':
             form = PollAddForm(request.POST)
@@ -85,6 +88,7 @@ def polls_add(request):
 
 @login_required
 def polls_edit(request, poll_id):
+    '''This function allows the user to edit an existing poll. It takes a request object and a poll ID as input and returns a rendered HTML template displaying a form to edit the poll. The function requires the user to be logged in (@login_required decorator) and be the owner of the poll to access the page.'''
     poll = get_object_or_404(Poll, pk=poll_id)
     if request.user != poll.owner:
         return redirect('home')
@@ -105,6 +109,7 @@ def polls_edit(request, poll_id):
 
 @login_required
 def polls_delete(request, poll_id):
+    '''This function allows the user to delete an existing poll. It takes a request object and a poll ID as input and deletes the poll from the database. The function requires the user to be logged in (@login_required decorator) and be the owner of the poll to access the page.'''
     poll = get_object_or_404(Poll, pk=poll_id)
     if request.user != poll.owner:
         return redirect('home')
@@ -116,6 +121,7 @@ def polls_delete(request, poll_id):
 
 @login_required
 def add_choice(request, poll_id):
+    '''This function allows the user to add a new choice to an existing poll. It takes a request object and a poll ID as input and returns a rendered HTML template displaying a form to add a new choice. The function requires the user to be logged in (@login_required decorator) and be the owner of the poll to access the page.'''
     poll = get_object_or_404(Poll, pk=poll_id)
     if request.user != poll.owner:
         return redirect('home')
@@ -139,6 +145,7 @@ def add_choice(request, poll_id):
 
 @login_required
 def choice_edit(request, choice_id):
+    '''This function allows the user to edit an existing choice for a poll. It takes a request object and a choice ID as input and returns a rendered HTML template displaying a form to edit the choice. The function requires the user to be logged in (@login_required decorator) and be the owner of the poll associated with the choice to access the page.'''
     choice = get_object_or_404(Choice, pk=choice_id)
     poll = get_object_or_404(Poll, pk=choice.poll.id)
     if request.user != poll.owner:
@@ -165,6 +172,7 @@ def choice_edit(request, choice_id):
 
 @login_required
 def choice_delete(request, choice_id):
+    '''This function allows the user to delete an existing choice for a poll. It takes a request object and a choice ID as input and deletes the choice from the database. The function requires the user to be logged in (@login_required decorator) and be the owner of the poll associated with the choice to access the page.'''
     choice = get_object_or_404(Choice, pk=choice_id)
     poll = get_object_or_404(Poll, pk=choice.poll.id)
     if request.user != poll.owner:
