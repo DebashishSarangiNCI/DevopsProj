@@ -11,7 +11,7 @@ import secrets
 
 
 class Poll(models.Model):
-     """
+    """
     Model representing a poll.
 
     This model represents a poll with fields such as 'owner' (ForeignKey to User model),
@@ -84,12 +84,11 @@ class Choice(models.Model):
 
 
 class Vote(models.Model):
-     """
+    """
     Model representing a vote in a poll.
 
     This model represents a vote in a poll, with ForeignKey relationships to the User,
     Poll, and Choice models. It does not define any methods.
-
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)

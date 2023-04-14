@@ -1,24 +1,26 @@
+"""
+views.py: This module contains views for the accounts app.
+"""
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User #noqa
 from .forms import UserRegistrationForm
 from django.contrib import messages
 from django.http import HttpResponse
 
-"""
-views.py: This module contains views for the accounts app.
-"""
+
 
 
 def login_user(request):
-     """
+    """
     View for handling user login.
 
     This view handles the logic for authenticating user credentials entered in the
     login form. If the form data is valid and the user exists, it logs in the user and
     redirects to the next URL specified in the 'next' parameter in the query string,
     or to the home page if 'next' is not specified. If the form data is invalid or
-    the user does not exist, it displays an error message on the login page"""
+    the user does not exist, it displays an error message on the login page
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -33,10 +35,8 @@ def login_user(request):
                            extra_tags='alert alert-warning alert-dismissible fade show')
 
     return render(request, 'accounts/login.html')
-
-
 def logout_user(request):
-       """
+    """
     View for handling user logout.
 
     This view handles the logic for logging out the currently logged-in user and

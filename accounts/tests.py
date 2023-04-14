@@ -1,5 +1,3 @@
-from django.test import TestCase
-
 """
 tests.py: This module contains test cases for testing the functionality of the application.
 
@@ -11,4 +9,7 @@ functionalities. These test cases help ensure that the application is functionin
 correctly and that any changes or additions to the code do not introduce bugs or
 regressions.
 """
+from django.test import TestCase #noqa
+
+
 # Create your tests here.

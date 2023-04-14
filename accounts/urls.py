@@ -1,6 +1,3 @@
-from django.urls import path
-from . import views
-
 """
 urls.py: This module contains URL patterns for the accounts app.
 
@@ -13,6 +10,10 @@ for namespacing of URLs in Django apps. This module serves as the entry point fo
 defining URL patterns for the accounts app and routing incoming requests to the
 appropriate views.
 """
+from django.urls import path
+from . import views
+
+
 app_name = "accounts"
 
 urlpatterns=[
