@@ -1,3 +1,9 @@
+"""
+This module defines the Django models for the polls application, including Poll, Choice, and Vote models.
+Poll model represents a poll with its owner, text, publication date, and active status.
+Choice model represents a choice for a poll with its poll and choice text.
+Vote model represents a vote for a poll with its user, poll, and choice.
+"""
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -5,6 +11,16 @@ import secrets
 
 
 class Poll(models.Model):
+     """
+    Model representing a poll.
+
+    This model represents a poll with fields such as 'owner' (ForeignKey to User model),
+    'text' (TextField for the poll question), 'pub_date' (DateTimeField for the publication
+    date), and 'active' (BooleanField to indicate if the poll is active or not). It also
+    defines methods to check if a user can vote, get the vote count, and get the result
+    dictionary for the poll.
+
+    """
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     pub_date = models.DateTimeField(default=timezone.now)
@@ -48,6 +64,14 @@ class Poll(models.Model):
 
 
 class Choice(models.Model):
+    """
+    Model representing a choice in a poll.
+
+    This model represents a choice in a poll, with a ForeignKey relationship to the
+    Poll model. It has a 'choice_text' field (CharField for the choice text), and a
+    method to get the vote count for the choice.
+
+    """
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=255)
 
@@ -60,6 +84,13 @@ class Choice(models.Model):
 
 
 class Vote(models.Model):
+     """
+    Model representing a vote in a poll.
+
+    This model represents a vote in a poll, with ForeignKey relationships to the User,
+    Poll, and Choice models. It does not define any methods.
+
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)

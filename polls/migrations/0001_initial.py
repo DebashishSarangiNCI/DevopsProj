@@ -7,7 +7,7 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
+    """ Migration for creating initial database schema. """
     initial = True
 
     dependencies = [

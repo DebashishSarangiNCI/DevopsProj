@@ -1,3 +1,9 @@
+"""
+This module defines the URL patterns for the polls application, including paths for listing polls,
+adding polls, editing polls, deleting polls, ending polls, adding choices to polls, editing choices,
+deleting choices, viewing poll details, and voting for polls.
+"""
+
 from django.urls import path
 from . import views
 
