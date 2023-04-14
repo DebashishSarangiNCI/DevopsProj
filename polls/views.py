@@ -184,6 +184,16 @@ def choice_delete(request, choice_id):
 
 
 def poll_detail(request, poll_id):
+    """
+    View function to display the details of a poll.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        poll_id (int): The ID of the poll to display.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+    """
     poll = get_object_or_404(Poll, id=poll_id)
 
     if not poll.active:
@@ -198,6 +208,16 @@ def poll_detail(request, poll_id):
 
 @login_required
 def poll_vote(request, poll_id):
+    """
+    View function to handle voting in a poll.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        poll_id (int): The ID of the poll to vote on.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+    """
     poll = get_object_or_404(Poll, pk=poll_id)
     choice_id = request.POST.get('choice')
     if not poll.user_can_vote(request.user):
@@ -215,11 +235,20 @@ def poll_vote(request, poll_id):
         messages.error(
             request, "No choice selected!", extra_tags='alert alert-warning alert-dismissible fade show')
         return redirect("polls:detail", poll_id)
-    return render(request, 'polls/poll_result.html', {'poll': poll})
-
+        
 
 @login_required
 def endpoll(request, poll_id):
+    """
+    View function to end a poll.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        poll_id (int): The ID of the poll to end.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+    """
     poll = get_object_or_404(Poll, pk=poll_id)
     if request.user != poll.owner:
         return redirect('home')
@@ -227,6 +256,5 @@ def endpoll(request, poll_id):
     if poll.active is True:
         poll.active = False
         poll.save()
-        return render(request, 'polls/poll_result.html', {'poll': poll})
-    else:
-        return render(request, 'polls/poll_result.html', {'poll': poll})
+    return render(request, 'polls/poll_result.html', {'poll': poll})
+    

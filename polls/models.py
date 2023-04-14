@@ -1,14 +1,7 @@
-"""
-This module defines the Django models for the polls application, including Poll, Choice, and Vote models.
-Poll model represents a poll with its owner, text, publication date, and active status.
-Choice model represents a choice for a poll with its poll and choice text.
-Vote model represents a vote for a poll with its user, poll, and choice.
-"""
+import secrets
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-import secrets
-
 
 class Poll(models.Model):
     """
@@ -28,7 +21,7 @@ class Poll(models.Model):
 
     def user_can_vote(self, user):
         """ 
-        Return False if user already voted
+        Return False if user already voted.
         """
         user_votes = user.vote_set.all()
         qs = user_votes.filter(poll=self)
@@ -50,11 +43,11 @@ class Poll(models.Model):
             d['alert_class'] = secrets.choice(alert_class)
             d['text'] = choice.choice_text
             d['num_votes'] = choice.get_vote_count
-            if not self.get_vote_count:
+            if not self.get_vote_count():
                 d['percentage'] = 0
             else:
-                d['percentage'] = (choice.get_vote_count /
-                                   self.get_vote_count)*100
+                d['percentage'] = (choice.get_vote_count() /
+                                   self.get_vote_count()) * 100
 
             res.append(d)
         return res

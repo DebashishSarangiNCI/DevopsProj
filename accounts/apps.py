@@ -9,3 +9,4 @@ class AccountsConfig(AppConfig):
     This class defines the configuration for the 'accounts' app, including the name of the app.
     """
     name = 'accounts'
+    

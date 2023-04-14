@@ -9,7 +9,7 @@ functionalities. These test cases help ensure that the application is functionin
 correctly and that any changes or additions to the code do not introduce bugs or
 regressions.
 """
-from django.test import TestCase #noqa
+from django.test import TestCase # noqa
 
 
 # Create your tests here.

@@ -3,7 +3,7 @@ views.py: This module contains views for the accounts app.
 """
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User #noqa
+from django.contrib.auth.models import User # noqa
 from .forms import UserRegistrationForm
 from django.contrib import messages
 from django.http import HttpResponse

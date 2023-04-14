@@ -1,3 +1,4 @@
+"""polls/forms.py: This module contains the forms used in the 'polls' app."""
 from django import forms
 from .models import Poll, Choice
 
@@ -11,7 +12,6 @@ class PollAddForm(forms.ModelForm):
     the 'text', 'choice1', and 'choice2' fields of the 'Poll' model.
 
     """
-
     choice1 = forms.CharField(label='Choice 1', max_length=100, min_length=1,
                               widget=forms.TextInput(attrs={'class': 'form-control'}))
     choice2 = forms.CharField(label='Choice 2', max_length=100, min_length=1,
