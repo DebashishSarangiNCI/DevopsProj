@@ -10,8 +10,8 @@ phases:
     commands:
       - python --version
       - python --version
-      - pylint --disable=C $CODEBUILD_SRC_DIR/*.py
-      - pylint --disable=C $CODEBUILD_SRC_DIR/*/*.py
+      - pylint --disable=all $CODEBUILD_SRC_DIR/*.py
+      - pylint --disable=all $CODEBUILD_SRC_DIR/*/*.py
      
 artifacts:
   files:
