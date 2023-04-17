@@ -1,0 +1,28 @@
+version: 0.2
+
+ 
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.7
+  pre_build:
+    commands:
+      - sudo apt-get update
+      - sudo apt-get install -y python3 python3-pip wget openjdk-8-jdk curl
+      - python3 -m pip install --upgrade pip
+      - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+      - sudo apt-get install -y nodejs
+      - python3 -m pip install awscli
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.0.2311-linux.zip
+      - unzip ./sonar-scanner-cli-4.6.0.2311-linux.zip
+      - mv sonar-scanner-4.6.0.2311-linux  sonar-scanner
+      - export PATH=$PATH:./sonar-scanner/bin
+  build:
+    commands:
+      - echo "sonar.coverage.exclusions=**/*.py" >> sonar-project.properties
+      - sonar-scanner -Dsonar.login=706c2033d18875df41b695872856e0ccfc90db79 -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=DebashishSarangiNCI_DevopsProj -Dsonar.organization=DebashishSarangiNCI
+      - sleep 5
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=DebashishSarangiNCI_DevopsProj >result.json
+      - cat result.json
+      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then $CODEBUILD_BUILD_SUCCEEDING -eq 0 ;fi
