@@ -24,7 +24,7 @@ class Poll(models.Model):
         """ 
         Return False if user already voted.
         """
-        user_votes = user.vote_set.all()
+        user_votes = Vote.objects.filter(user=user)
         qs = user_votes.filter(poll=self)
         if qs.exists():
             return False
@@ -35,25 +35,23 @@ class Poll(models.Model):
         return self.vote_set.count()
 
     def get_result_dict(self):
-    res = []
-    for choice in self.choice_set.all():
-        d = {}
-        alert_class = ['primary', 'secondary', 'success',
-                       'danger', 'dark', 'warning', 'info']
+        res = []
+        for choice in self.choice_set.all():
+            d = {}
+            alert_class = ['primary', 'secondary', 'success',
+                           'danger', 'dark', 'warning', 'info']
 
-        d['alert_class'] = secrets.choice(alert_class)
-        d['text'] = choice.choice_text
-        d['num_votes'] = choice.get_vote_count
-        if not self.get_vote_count():
-            d['percentage'] = 0
-        else:
-            d['percentage'] = (choice.get_vote_count /
-                               self.get_vote_count) * 100
+            d['alert_class'] = secrets.choice(alert_class)
+            d['text'] = choice.choice_text
+            d['num_votes'] = choice.get_vote_count
+            if self.get_vote_count() == 0:
+                d['percentage'] = 0
+            else:
+                d['percentage'] = (choice.get_vote_count() /
+                                   self.get_vote_count()) * 100
 
-        res.append(d)
-    return res
-
-
+            res.append(d)
+        return res
 
 class Choice(models.Model):
     """
@@ -73,7 +71,6 @@ class Choice(models.Model):
 
     def __str__(self):
         return f"{self.poll.text[:25]} - {self.choice_text[:25]}"
-
 
 class Vote(models.Model):
     """
@@ -95,4 +92,3 @@ class Question(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-        
