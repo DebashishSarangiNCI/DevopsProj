@@ -1,7 +1,9 @@
-import secrets
 import datetime
+import secrets
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 class Poll(models.Model):
@@ -36,6 +38,7 @@ class Poll(models.Model):
 
     def get_result_dict(self):
         res = []
+        total_vote_count = self.vote_set.count()
         for choice in self.choice_set.all():
             d = {}
             alert_class = ['primary', 'secondary', 'success',
@@ -43,12 +46,11 @@ class Poll(models.Model):
 
             d['alert_class'] = secrets.choice(alert_class)
             d['text'] = choice.choice_text
-            d['num_votes'] = choice.get_vote_count
-            if self.get_vote_count() == 0:
+            d['num_votes'] = choice.get_vote_count()
+            if total_vote_count == 0:
                 d['percentage'] = 0
             else:
-                d['percentage'] = (choice.get_vote_count() /
-                                   self.get_vote_count()) * 100
+                d['percentage'] = (choice.get_vote_count() / total_vote_count) * 100
 
             res.append(d)
         return res
@@ -92,3 +94,6 @@ class Question(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+    def get_absolute_url(self):
+        return reverse('polls:detail', args=[str(self.id)])
