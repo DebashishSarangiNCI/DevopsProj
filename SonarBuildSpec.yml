@@ -24,3 +24,4 @@ phases:
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=DebashishSarangiNCI_DevopsProj > result.json
       - cat result.json
       - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ]; then exit 1; fi
+
