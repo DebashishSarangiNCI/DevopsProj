@@ -1,10 +1,9 @@
-import datetime
-import secrets
-
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse
 from django.utils import timezone
+from django.urls import reverse
+import datetime
+import secrets
 
 class Poll(models.Model):
     """
@@ -24,9 +23,9 @@ class Poll(models.Model):
 
     def user_can_vote(self, user):
         """ 
-        Return False if user already voted.
+        Return False if user already voted
         """
-        user_votes = Vote.objects.filter(user=user)
+        user_votes = user.vote_set.all()
         qs = user_votes.filter(poll=self)
         if qs.exists():
             return False
@@ -38,7 +37,6 @@ class Poll(models.Model):
 
     def get_result_dict(self):
         res = []
-        total_vote_count = self.vote_set.count()
         for choice in self.choice_set.all():
             d = {}
             alert_class = ['primary', 'secondary', 'success',
@@ -46,14 +44,18 @@ class Poll(models.Model):
 
             d['alert_class'] = secrets.choice(alert_class)
             d['text'] = choice.choice_text
-            d['num_votes'] = choice.get_vote_count()
-            if total_vote_count == 0:
+            d['num_votes'] = choice.get_vote_count
+            if not self.get_vote_count:
                 d['percentage'] = 0
             else:
-                d['percentage'] = (choice.get_vote_count() / total_vote_count) * 100
+                d['percentage'] = (choice.get_vote_count /
+                                   self.get_vote_count)*100
 
             res.append(d)
         return res
+
+    def __str__(self):
+        return self.text
 
 class Choice(models.Model):
     """
@@ -73,7 +75,7 @@ class Choice(models.Model):
 
     def __str__(self):
         return f"{self.poll.text[:25]} - {self.choice_text[:25]}"
-
+        
 class Vote(models.Model):
     """
     Model representing a vote in a poll.
